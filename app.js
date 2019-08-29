@@ -6,7 +6,6 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const app = express()
 const port = 3000
-
 // load SQL database
 const db = require('./models')
 
