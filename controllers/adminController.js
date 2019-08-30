@@ -170,8 +170,8 @@ const adminControllers = {
       if (isAdmin) {
         user.update({ isAdmin: 0 })
           .then(user => {
-            req.flash('success_messages', `${user.email} 已更改為一般用戶，請重新登入`)
-            return res.redirect('/signin')
+            req.flash('success_messages', `${user.email} 已更改為一般用戶`)
+            return res.redirect('/admin/users')
           })
       } else {
         user.update({ isAdmin: 1 })
