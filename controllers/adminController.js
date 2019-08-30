@@ -155,6 +155,14 @@ const adminControllers = {
           res.redirect('/admin/restaurants')
         })
     })
+  },
+
+  editUsers: (req, res) => {
+    return res.render('admin/users')
+  },
+
+  putUsers: (req, res) => {
+    return res.render('/admin/users')
   }
 }
 
