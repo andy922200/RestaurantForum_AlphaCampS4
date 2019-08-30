@@ -3,6 +3,9 @@ const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
+// initialize express-validator
+const { check, validationResult } = require('express-validator')
+const { registerFormCheck } = require('../public/javascripts/validationRule')
 
 module.exports = (app, passport) => {
   // authenticate the identity first
@@ -37,7 +40,7 @@ module.exports = (app, passport) => {
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
 
   app.get('/signup', userController.signUpPage)
-  app.post('/signup', userController.signUp)
+  app.post('/signup', registerFormCheck, userController.signUp)
   app.get('/signin', userController.signInPage)
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
   app.get('/logout', userController.logout)

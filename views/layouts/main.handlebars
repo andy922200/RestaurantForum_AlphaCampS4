@@ -35,7 +35,16 @@
   <main role="main">
     <div class="album py-5 bg-light">
       <div class="container">
-
+        {{#if errorMessages}}
+        {{#each errorMessages}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{{this.message}}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        {{/each}}
+        {{/if}}
         {{#if success_messages}}
         <div class="alert alert-success" role="alert" style="margin: 30px 0 ;">
           {{success_messages}}

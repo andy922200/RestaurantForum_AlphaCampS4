@@ -2,12 +2,18 @@ const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
 
+// initialize express-validator
+const { check, validationResult } = require('express-validator')
+const { registerFormCheck } = require('../public/javascripts/validationRule')
+
 let userController = {
   signUpPage: (req, res) => {
     return res.render('signup')
   },
 
   signUp: (req, res) => {
+    const errors = validationResult(req)
+    let errorMessages = []
     if (req.body.passwordCheck !== req.body.password) {
       req.flash('error_messages', '兩次密碼輸入不同')
       return res.redirect('/signup')
@@ -17,6 +23,11 @@ let userController = {
           if (user) {
             req.flash('error_messages', '信箱重複')
             return res.redirect('/signup')
+          } else if (!errors.isEmpty()) {
+            for (let i = 0; i < errors.array().length; i++) {
+              errorMessages.push({ message: errors.array()[i]['msg'] })
+            }
+            res.render('signup', { errorMessages: errorMessages })
           } else {
             User.create({
               name: req.body.name,

@@ -13,6 +13,7 @@ const db = require('./models')
 app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
 // initialize method-override
 app.use(methodOverride('_method'))
