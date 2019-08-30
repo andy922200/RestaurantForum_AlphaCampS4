@@ -15,9 +15,9 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">編號</th>
       <th scope="col">Name</th>
-      <th scope="col">#</th>
+      <th scope="col">操作選項</th>
     </tr>
   </thead>
   <tbody>
@@ -26,18 +26,18 @@
       <th scope="row">{{this.id}}</th>
       <td>{{this.name}}</td>
       <td>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}">
-            Show
-          </a>
-        </button>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}/edit">
-            Edit
-          </a>
-        </button>
+        <a href="/admin/restaurants/{{this.id}}">
+          <button type="button" class="btn btn-outline-info">
+            詳情
+          </button>
+        </a>
+        <a href="/admin/restaurants/{{this.id}}/edit">
+          <button type="button" class="btn btn-outline-primary">
+            編輯
+          </button>
+        </a>
         <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Delete</button>
+          <button type="submit" class="btn btn-outline-danger">Delete</button>
         </form>
       </td>
     </tr>

@@ -15,10 +15,10 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">編號</th>
       <th scope="col">Email</th>
-      <th scope="col">Role</th>
-      <th scope="col">#</th>
+      <th scope="col">權限</th>
+      <th scope="col">操作選項</th>
     </tr>
   </thead>
   <tbody>
@@ -30,14 +30,14 @@
       <td>Admin</td>
       <td>
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Set as User</button>
+          <button type="submit" class="btn btn-outline-secondary">Set as User</button>
         </form>
       </td>
       {{else}}
       <td>User</td>
       <td>
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Set as Admin</button>
+          <button type="submit" class="btn btn-outline-primary">Set as Admin</button>
         </form>
       </td>
       {{/if}}
