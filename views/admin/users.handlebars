@@ -1,4 +1,47 @@
 <!--views/admin/users.handlebars-->
-<h3>
-  All users will be here.
-</h3>
+<h1>餐廳後台</h1>
+
+<a href='/admin/restaurants/create'>
+  <button type="button" class="btn btn-primary">New Restaurant</button>
+</a>
+<br />
+<br />
+<a href="/admin/restaurants">Restaurants 餐廳管理</a>
+<span>|</span>
+<a href="/admin/users">Users 使用者管理</a>
+<br />
+<br />
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      {{#if this.isAdmin}}
+      <td>Admin</td>
+      <td>
+        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-link">Set as User</button>
+        </form>
+      </td>
+      {{else}}
+      <td>User</td>
+      <td>
+        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-link">Set as Admin</button>
+        </form>
+      </td>
+      {{/if}}
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

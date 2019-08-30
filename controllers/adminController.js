@@ -3,6 +3,7 @@ const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = '95f7b7fe0b0ea22'
 const Restaurant = db.Restaurant
+const User = db.User
 
 const adminControllers = {
   getRestaurants: (req, res) => {
@@ -158,11 +159,28 @@ const adminControllers = {
   },
 
   editUsers: (req, res) => {
-    return res.render('admin/users')
+    return User.findAll().then(users => {
+      res.render('admin/users', { users: users })
+    })
   },
 
   putUsers: (req, res) => {
-    return res.render('/admin/users')
+    return User.findByPk(req.params.id).then(user => {
+      const { isAdmin } = user
+      if (isAdmin) {
+        user.update({ isAdmin: 0 })
+          .then(user => {
+            req.flash('success_messages', `${user.email} 已更改為一般用戶`)
+            return res.redirect('/admin/users')
+          })
+      } else {
+        user.update({ isAdmin: 1 })
+          .then(user => {
+            req.flash('success_messages', `${user.email} 已更改為管理員`)
+            return res.redirect('/admin/users')
+          })
+      }
+    })
   }
 }
 
