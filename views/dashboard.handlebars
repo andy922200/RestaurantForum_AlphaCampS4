@@ -1,0 +1,27 @@
+<!-- /views/dashboard.handlebars-->
+<div class="row">
+  <div class="col-md-12">
+    <h1>{{restaurant.name}}</h1>
+    <h5>{{restaurant.Category.name}}</h5>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-md-12">
+    <ul>
+      <li>
+        <h4>評論數: <b>{{commentCounts}}</b></h4>
+      </li>
+      <li>
+        <h4>瀏覽次數:</h4>
+      </li>
+      <li>
+        <h4>收藏數:</h4>
+      </li>
+    </ul>
+  </div>
+</div>
+<hr />
+<a href="javascript:history.back()">
+  <button type="button" class="btn btn-primary">回上一頁</button>
+</a>
