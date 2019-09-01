@@ -29,7 +29,8 @@ let restController = {
         const data = result.rows.map(r => ({
           ...r.dataValues,
           description: r.dataValues.description.substring(0, 50),
-          isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(r.id)
+          isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(r.id),
+          isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id)
         }))
         Category.findAll().then(categories => {
           return res.render('restaurants', {
@@ -49,6 +50,7 @@ let restController = {
       include: [
         Category,
         { model: User, as: 'FavoriteUsers' },
+        { model: User, as: 'LikedUsers' },
         { model: Comment, include: [User] }
       ]
     })
@@ -56,7 +58,8 @@ let restController = {
         return restaurant.increment('viewCount', { by: 1 })
       }).then(restaurant => {
         const isFavorite = restaurant.FavoriteUsers.map(d => d.id).includes(req.user.id)
-        return res.render('restaurant', { restaurant: restaurant, isFavorite: isFavorite })
+        const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
+        return res.render('restaurant', { restaurant: restaurant, isFavorite: isFavorite, isLiked: isLiked })
       })
   },
   getFeeds: (req, res) => {
