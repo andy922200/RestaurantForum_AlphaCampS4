@@ -7,6 +7,8 @@ let commentController = {
       text: req.body.text,
       RestaurantId: req.body.restaurantId,
       UserId: req.user.id
+    }).then(comment => {
+      res.redirect(`/restaurants/${req.body.restaurantId}`)
     })
   },
   deleteComment: (req, res) => {
