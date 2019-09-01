@@ -1,6 +1,11 @@
 //customized if/else, options.fn() & options.inverse() are methods.
 module.exports = {
-  ifEquals: (arg1, arg2, options) => {
-    return (arg1 == arg2) ? options.fn(this) : options.inverse(this)
-  }
+  ifEquals:
+    function (arg1, arg2, options) {
+      if (arg1 === arg2) {
+        return options.fn(this)
+      } else {
+        return options.inverse(this)
+      }
+    }
 }
