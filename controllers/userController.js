@@ -60,14 +60,19 @@ let userController = {
   },
 
   getUser: (req, res) => {
-    return User.findAndCountAll({
-      where: { id: req.params.id },
-      include: [{ model: Comment, include: [Restaurant] }]
-    }).then(result => {
-      let user = result.rows[0]["dataValues"]
-      let commentCounts = user.Comments.length
-      return res.render('profile', { user: user, commentCounts: commentCounts })
-    })
+    if (Number(req.params.id) !== req.user.id) {
+      req.flash('error_messages', "你沒有存取此使用者的權限")
+      return res.redirect(`/users/${req.user.id}`)
+    } else {
+      return User.findAndCountAll({
+        where: { id: req.params.id },
+        include: [{ model: Comment, include: [Restaurant] }]
+      }).then(result => {
+        let user = result.rows[0]["dataValues"]
+        let commentCounts = user.Comments.length
+        return res.render('profile', { user: user, commentCounts: commentCounts })
+      })
+    }
   },
 
   editUser: (req, res) => {
