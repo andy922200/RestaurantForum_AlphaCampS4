@@ -1,4 +1,6 @@
 //customized if/else, options.fn() & options.inverse() are methods.
+const moment = require('moment')
+
 module.exports = {
   ifEquals:
     function (arg1, arg2, options) {
@@ -8,4 +10,8 @@ module.exports = {
         return options.inverse(this)
       }
     }
+  ,
+  moment: function (a) {
+    return moment(a).fromNow()
+  }
 }
