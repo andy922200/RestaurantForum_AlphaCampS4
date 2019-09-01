@@ -14,7 +14,9 @@ const adminControllers = {
   },
 
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll().then(categories => {
+      return res.render('admin/create', { categories: categories })
+    })
   },
 
   postRestaurant: (req, res) => {
@@ -34,6 +36,7 @@ const adminControllers = {
           opening_hours: req.body.opening_hours,
           description: req.body.description,
           image: file ? `/upload/${file.originalname}` : null,
+          CategoryId: req.body.categoryId
         }).then((restaurant) => {
           req.flash('success_messages', '餐廳已成功建立')
           return res.redirect('/admin/restaurants')
@@ -46,7 +49,8 @@ const adminControllers = {
         address: req.body.address,
         opening_hours: req.body.opening_hours,
         description: req.body.description,
-        image: null
+        image: null,
+        CategoryId: req.body.categoryId
       }).then(restaurant => {
         req.flash('success_messages', '餐廳已成功建立')
         res.redirect('/admin/restaurants')
@@ -81,7 +85,9 @@ const adminControllers = {
 
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
-      return res.render('admin/create', { restaurant: restaurant })
+      Category.findAll().then(categories => {
+        return res.render('admin/create', { restaurant: restaurant, categories: categories })
+      })
     })
   },
 
@@ -105,6 +111,7 @@ const adminControllers = {
               opening_hours: req.body.opening_hours,
               description: req.body.description,
               image: file ? img.data.link : restaurant.image,
+              CategoryId: req.body.categoryId
             })
               .then((restaurant) => {
                 req.flash('success_messages', 'restaurant was successfully to update')
@@ -120,7 +127,8 @@ const adminControllers = {
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
-          image: restaurant.image
+          image: restaurant.image,
+          CategoryId: req.body.categoryId
         }).then(restaurant => {
           req.flash('success_messages', '餐廳資料已經成功更新')
           res.redirect('/admin/restaurants')
