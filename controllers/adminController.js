@@ -4,10 +4,11 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = '95f7b7fe0b0ea22'
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
 
 const adminControllers = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll().then(restaurants => {
+    return Restaurant.findAll({ include: [Category] }).then(restaurants => {
       return res.render('admin/restaurants', { restaurants: restaurants })
     })
   },
@@ -73,7 +74,7 @@ const adminControllers = {
   },
 
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then(restaurant => {
+    return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
       return res.render('admin/restaurant', { restaurant: restaurant })
     })
   },
