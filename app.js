@@ -6,6 +6,12 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const app = express()
 const port = process.env.PORT || 3000
+
+// 存取 env
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 // load SQL database
 const db = require('./models')
 
