@@ -1,0 +1,15 @@
+<!-- /views/profile.handlebars-->
+<div class="row">
+  <div class="col-md-4">
+    <img class="img-responsive center-block" src="https://picsum.photos/id/104/250/250"
+      style="width: 220px;margin-bottom: 25px;">
+  </div>
+  <div class="col-md-8">
+    <h3>{{user.name}}</h3>
+    <h5>{{user.email}}</h5>
+    <a href="/users/{{user.id}}/edit">
+      <button type="submit" class="btn btn-primary">編輯</button>
+    </a>
+  </div>
+  <hr>
+</div>
