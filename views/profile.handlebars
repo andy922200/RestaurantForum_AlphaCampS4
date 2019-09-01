@@ -6,9 +6,23 @@
   <div class="col-md-8">
     <h3>{{user.name}}</h3>
     <h5>{{user.email}}</h5>
+    <br />
+    <h6>已發表 {{commentCounts}} 篇評論</h6>
     <a href="/users/{{user.id}}/edit">
       <button type="submit" class="btn btn-primary">編輯</button>
     </a>
   </div>
-  <hr>
+</div>
+<br />
+<br />
+<div class="row">
+  <div class="col-md-6">
+    <h4 class="p-3 mb-3 bg-primary text-white">{{commentCounts}} 家已評論餐廳</h4>
+    {{#each user.Comments}}
+    <a href="/restaurants/{{this.Restaurant.id}}" class="col-md-2">
+      <img class="img-responsive center-block" src="{{this.Restaurant.image}}"
+        style=" width: 100px;margin-bottom: 25px;" alt="restaurant photo">
+    </a>
+    {{/each}}
+  </div>
 </div>

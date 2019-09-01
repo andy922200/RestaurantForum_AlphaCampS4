@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -58,14 +60,14 @@ let userController = {
   },
 
   getUser: (req, res) => {
-    if (Number(req.params.id) !== req.user.id) {
-      req.flash('error_messages', "你沒有瀏覽此使用者的權限")
-      return res.redirect(`/users/${req.user.id}`)
-    } else {
-      User.findByPk(req.params.id).then(user => {
-        res.render('profile', { user: user })
-      })
-    }
+    return User.findAndCountAll({
+      where: { id: req.params.id },
+      include: [{ model: Comment, include: [Restaurant] }]
+    }).then(result => {
+      let user = result.rows[0]["dataValues"]
+      let commentCounts = user.Comments.length
+      return res.render('profile', { user: user, commentCounts: commentCounts })
+    })
   },
 
   editUser: (req, res) => {
@@ -99,7 +101,8 @@ let userController = {
           email: req.body.email,
           image: user.image
         }).then(user => {
-          res.render('profile', { user: user, success_messages: `已成功修改資料` })
+          req.flash('success_messages', '已成功修改資料`')
+          res.redirect(`/users/${user.id}`)
         })
       })
     } else {
@@ -112,7 +115,8 @@ let userController = {
               email: req.body.email,
               image: file ? img.data.link : user.image
             }).then(user => {
-              return res.render('profile', { user: user, success_messages: `已成功修改資料` })
+              req.flash('success_messages', '已成功修改資料`')
+              res.redirect(`/users/${user.id}`)
             })
           })
       })
