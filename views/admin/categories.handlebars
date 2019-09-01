@@ -1,0 +1,48 @@
+<!-- /views/admin/categories.handlebars-->
+<h1>餐廳後台</h1>
+
+<br />
+<br />
+<a href="/admin/restaurants">Restaurants 餐廳管理</a>
+<span>|</span>
+<a href="/admin/users">Users 使用者管理</a>
+<span>|</span>
+<a href="/admin/categories">Categories 分類管理</a>
+<br />
+<br />
+
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+  <form action="/admin/categories" method="POST">
+    <input type="text" placeholder="請輸入新的種類名稱" name="name">
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<br />
+<br />
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">編號</th>
+      <th scope="col">種類名稱</th>
+      <th scope="col">操作選項</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>
+        <a href="/admin/categories/{{this.id}}">
+          <button type="button" class="btn btn-outline-primary">編輯</button>
+        </a>
+        <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-outline-danger">刪除</button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<br />
+<br />
