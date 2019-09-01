@@ -10,7 +10,10 @@ const port = process.env.PORT || 3000
 const db = require('./models')
 
 // initialize template engine
-app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }))
+app.engine('handlebars', expressHandlebars({
+  defaultLayout: 'main',
+  helpers: require('./config/handlebarshelper')
+}))
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
