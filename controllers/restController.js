@@ -51,6 +51,8 @@ let restController = {
       ]
     })
       .then(restaurant => {
+        return restaurant.increment('viewCount', { by: 1 })
+      }).then(restaurant => {
         return res.render('restaurant', { restaurant: restaurant })
       })
   },
