@@ -86,6 +86,24 @@ let restController = {
       let commentCounts = restaurant.Comments.length
       return res.render('dashboard', { restaurant: restaurant, commentCounts: commentCounts })
     })
+  },
+  getTopRestaurants: (req, res) => {
+    // 取出所有的 Restaurant 和 FavoriteUser 資料
+    return Restaurant.findAll({
+      include: [{ model: User, as: 'FavoriteUsers' }]
+    }).then(restaurants => {
+      restaurants = restaurants.map(restaurant => ({
+        ...restaurant.dataValues,
+        description: restaurant.dataValues.description.substring(0, 50),
+        FavoriteCount: restaurant.FavoriteUsers.length,
+        isFavorite: req.user.FavoriteRestaurants.map(r => r.id).includes(restaurant.id)
+      }))
+      // 依追蹤者數量排序
+      restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
+      // 取出前10個
+      restaurants = restaurants.slice(0, 10)
+      return res.render('topRestaurant', { restaurants: restaurants })
+    })
   }
 }
 
