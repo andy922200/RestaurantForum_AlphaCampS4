@@ -5,12 +5,16 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
+const adminService = require('../services/adminService')
 
 const adminControllers = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({ include: [Category] }).then(restaurants => {
-      return res.render('admin/restaurants', { restaurants: restaurants })
+    adminService.getRestaurants(req, res, (data) => {
+      return res.render('admin/restaurants', data)
     })
+    /*return Restaurant.findAll({ include: [Category] }).then(restaurants => {
+      return res.render('admin/restaurants', { restaurants: restaurants })
+    })*/
   },
 
   createRestaurant: (req, res) => {
