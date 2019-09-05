@@ -20,18 +20,15 @@ let categoryController = {
     })
   },
   putCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', '請輸入種類名稱')
-      return res.redirect('back')
-    } else {
-      return Category.findByPk(req.params.id).then(category => {
-        category.update({
-          name: req.body.name
-        }).then(category => {
-          res.redirect('/admin/categories')
-        })
-      })
-    }
+    categoryService.putCategory(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      } else {
+        req.flash('success_messages', data['message'])
+        return res.redirect('/admin/categories')
+      }
+    })
   },
   deleteCategory: (req, res) => {
     categoryService.deleteCategory(req, res, (data) => {

@@ -27,6 +27,19 @@ let categoryService = {
       }))
     }
   },
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({ status: 'error', message: '請輸入種類名稱' })
+    } else {
+      return Category.findByPk(req.params.id).then(category => {
+        category.update({
+          name: req.body.name
+        }).then(category => {
+          callback({ status: 'success', message: '類別已更新' })
+        })
+      })
+    }
+  },
   deleteCategory: (req, res, callback) => {
     return Category.findByPk(req.params.id).then(category => {
       category.destroy()
