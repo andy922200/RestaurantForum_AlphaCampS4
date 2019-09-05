@@ -21,70 +21,21 @@ const adminControllers = {
   },
 
   postRestaurant: (req, res) => {
-    const { file } = req
-    const { name, tel, address, opening_hours } = req.body
-    if (!name || !tel || !address || !opening_hours) {
-      req.flash('error_messages', '請檢查名稱、電話、地址、營業時間欄位是否有空白')
-      return res.redirect('back')
-    }
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.create({
-          name: req.body.name,
-          tel: req.body.tel,
-          address: req.body.address,
-          opening_hours: req.body.opening_hours,
-          description: req.body.description,
-          image: file ? `/upload/${file.originalname}` : null,
-          CategoryId: req.body.categoryId
-        }).then((restaurant) => {
-          req.flash('success_messages', '餐廳已成功建立')
-          return res.redirect('/admin/restaurants')
-        })
-      })
-    } else {
-      return Restaurant.create({
-        name: req.body.name,
-        tel: req.body.tel,
-        address: req.body.address,
-        opening_hours: req.body.opening_hours,
-        description: req.body.description,
-        image: null,
-        CategoryId: req.body.categoryId
-      }).then(restaurant => {
-        req.flash('success_messages', '餐廳已成功建立')
-        res.redirect('/admin/restaurants')
-      })
-    }
-    /* 本機端模式
-    if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log(err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.create({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: file ? `/upload/${file.originalname}` : null,
-          }).then((restaurant) => {
-            req.flash('success_messages', '餐廳已成功建立')
-            return res.redirect('/admin/restaurants')
-          })
-        })
-      })
-    }*/
+    adminService.postRestaurant(req, res, (data) => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      } else {
+        req.flash('success_messages', data['message'])
+        return res.redirect('/admin/restaurants')
+      }
+    })
   },
 
   getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, (data) => {
       return res.render('admin/restaurant', data)
     })
-    /*return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
-      return res.render('admin/restaurant', { restaurant: restaurant })
-    })*/
   },
 
   editRestaurant: (req, res) => {
@@ -139,34 +90,12 @@ const adminControllers = {
         })
       })
     }
-    /*　本機端模式
-    if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log(err)
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return Restaurant.findByPk(req.params.id)
-            .then((restaurant) => {
-              restaurant.update({
-                name: req.body.name,
-                tel: req.body.tel,
-                address: req.body.address,
-                opening_hours: req.body.opening_hours,
-                description: req.body.description,
-                image: file ? `/upload/${file.originalname}` : restaurant.image
-              }).then((restaurant) => {
-                req.flash('success_messages', '餐廳資料已經成功更新')
-                res.redirect('/admin/restaurants')
-              })
-            })
-        })
-      })
-    }*/
   },
 
   deleteRestaurant: (req, res) => {
     adminService.deleteRestaurant(req, res, (data) => {
       if (data['status'] === 'success') {
-        req.flash('error_messages', `餐廳已被刪除`)
+        req.flash('error_messages', data['message'])
         return res.redirect('/admin/restaurants')
       }
     })
