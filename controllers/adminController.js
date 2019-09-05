@@ -12,9 +12,6 @@ const adminControllers = {
     adminService.getRestaurants(req, res, (data) => {
       return res.render('admin/restaurants', data)
     })
-    /*return Restaurant.findAll({ include: [Category] }).then(restaurants => {
-      return res.render('admin/restaurants', { restaurants: restaurants })
-    })*/
   },
 
   createRestaurant: (req, res) => {
@@ -167,12 +164,11 @@ const adminControllers = {
   },
 
   deleteRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then(restaurant => {
-      restaurant.destroy()
-        .then(restaurant => {
-          req.flash('error_messages', `${restaurant.name} 餐廳已被刪除`)
-          res.redirect('/admin/restaurants')
-        })
+    adminService.deleteRestaurant(req, res, (data) => {
+      if (data['status'] === 'success') {
+        req.flash('error_messages', `餐廳已被刪除`)
+        return res.redirect('/admin/restaurants')
+      }
     })
   },
 

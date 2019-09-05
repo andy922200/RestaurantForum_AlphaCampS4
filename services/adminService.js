@@ -16,7 +16,14 @@ const adminService = {
     return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
       callback({ restaurant: restaurant })
     })
+  },
+  deleteRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id).then(restaurant => {
+      restaurant.destroy()
+        .then(restaurant => {
+          callback({ status: 'success', message: `餐廳已被刪除` })
+        })
+    })
   }
 }
-
 module.exports = adminService
