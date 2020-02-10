@@ -33,15 +33,18 @@ let restController = {
           isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id)
         }))
         Category.findAll().then(categories => {
-          return res.render('restaurants', {
-            restaurants: data,
-            categories: categories,
-            categoryId: categoryId,
-            page: page,
-            totalPage: totalPage,
-            prev: prev,
-            next: next
-          })
+
+          return res.render('restaurants',
+            JSON.parse(JSON.stringify({
+              restaurants: data,
+              categories: categories,
+              categoryId: categoryId,
+              page: page,
+              totalPage: totalPage,
+              prev: prev,
+              next: next
+            }))
+          )
         })
       })
   },
@@ -73,7 +76,7 @@ let restController = {
         order: [['createdAt', 'DESC']],
         include: [User, Restaurant]
       }).then(comments => {
-        return res.render('feeds', { restaurants: restaurants, comments: comments })
+        return res.render('feeds', JSON.parse(JSON.stringify({ restaurants: restaurants, comments: comments })))
       })
     })
   },
@@ -102,7 +105,7 @@ let restController = {
       restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
       // 取出前10個
       restaurants = restaurants.slice(0, 10)
-      return res.render('topRestaurant', { restaurants: restaurants })
+      return res.render('topRestaurant', JSON.parse(JSON.stringify({ restaurants: restaurants })))
     })
   }
 }

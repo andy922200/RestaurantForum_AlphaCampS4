@@ -18,7 +18,7 @@ const db = require('./models')
 // initialize template engine
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
-  helpers: require('./config/handlebarshelper')
+  helpers: require('./config/handlebarshelper'),
 }))
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))
