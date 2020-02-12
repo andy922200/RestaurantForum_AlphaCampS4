@@ -9,6 +9,7 @@ const Category = db.Category
 const adminService = {
   getRestaurants: (req, res, callback) => {
     return Restaurant.findAll({ include: [Category] }).then(restaurants => {
+      //restaurants = restaurants.map(d => d.get({ plain: true }))
       callback({ restaurants: restaurants })
     })
   },

@@ -33,9 +33,8 @@ let restController = {
           isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id)
         }))
         Category.findAll().then(categories => {
-
-          return res.render('restaurants',
-            JSON.parse(JSON.stringify({
+          return res.render('restaurants', JSON.parse(JSON.stringify(
+            {
               restaurants: data,
               categories: categories,
               categoryId: categoryId,
@@ -43,8 +42,8 @@ let restController = {
               totalPage: totalPage,
               prev: prev,
               next: next
-            }))
-          )
+            }
+          )))
         })
       })
   },
@@ -62,7 +61,7 @@ let restController = {
       }).then(restaurant => {
         const isFavorite = restaurant.FavoriteUsers.map(d => d.id).includes(req.user.id)
         const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
-        return res.render('restaurant', { restaurant: restaurant, isFavorite: isFavorite, isLiked: isLiked })
+        return res.render('restaurant', JSON.parse(JSON.stringify({ restaurant: restaurant, isFavorite: isFavorite, isLiked: isLiked })))
       })
   },
   getFeeds: (req, res) => {
@@ -87,7 +86,7 @@ let restController = {
     }).then(result => {
       let restaurant = result.rows[0]["dataValues"]
       let commentCounts = restaurant.Comments.length
-      return res.render('dashboard', { restaurant: restaurant, commentCounts: commentCounts })
+      return res.render('dashboard', JSON.parse(JSON.stringify({ restaurant: restaurant, commentCounts: commentCounts })))
     })
   },
   getTopRestaurants: (req, res) => {
@@ -97,7 +96,7 @@ let restController = {
     }).then(restaurants => {
       restaurants = restaurants.map(restaurant => ({
         ...restaurant.dataValues,
-        description: restaurant.dataValues.description.substring(0, 50),
+        description: restaurant.description.substring(0, 50),
         FavoriteCount: restaurant.FavoriteUsers.length,
         isFavorite: req.user.FavoriteRestaurants.map(r => r.id).includes(restaurant.id)
       }))
@@ -105,7 +104,7 @@ let restController = {
       restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
       // 取出前10個
       restaurants = restaurants.slice(0, 10)
-      return res.render('topRestaurant', JSON.parse(JSON.stringify({ restaurants: restaurants })))
+      return res.render('topRestaurant', { restaurants: restaurants })
     })
   }
 }

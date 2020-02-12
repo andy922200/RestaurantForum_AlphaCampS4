@@ -37,7 +37,7 @@ passport.deserializeUser((id, cb) => {
       { model: User, as: 'Followings' },
     ]
   }).then(user => {
-    return cb(null, JSON.parse(JSON.stringify(user)))
+    return cb(null, user.get())
   })
 })
 
